@@ -1,0 +1,40 @@
+//
+//  TFTabbar.h
+//  TFTabbar
+//
+//  Created by Tom Fewster on 10/09/2012.
+//  Copyright (c) 2012 Tom Fewster. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class TFTabbarController;
+
+@protocol TFTabbarDelegate <NSObject>
+- (NSString *)tabbarController:(TFTabbarController *)tabbarController titleForObject:(id)object;
+- (NSString *)tabbarController:(TFTabbarController *)tabbarController identifierForObject:(id)object;
+- (NSViewController *)tabbarController:(TFTabbarController *)tabbarController viewControllerForIdentifier:(NSString *)identifier;
+- (void)tabbarController:(TFTabbarController *)tabbarController prepareViewController:(NSViewController *)viewController withObject:(id)object;
+
+- (void)tabbarControllerDidAddNewObject:(TFTabbarController *)tabbarController;
+- (void)tabbarController:(TFTabbarController *)tabbarController didRemoveObject:(id)object;
+@end
+
+
+@interface TFTabbarController : NSObject
+
+@property (nonatomic, weak) IBOutlet NSView *view;
+@property (nonatomic, assign) NSUInteger selectedIndex;
+
+@property (weak) IBOutlet NSObject<TFTabbarDelegate> *delegate;
+@property (nonatomic, strong, readonly) NSArray *objects;
+@property (nonatomic, readonly) NSUInteger count;
+
+- (void)updateTabbarTitles;
+
+- (void)addObject:(id)object;
+- (void)insertObject:(id)object atIndex:(NSUInteger)index;
+- (void)addObjects:(NSArray *)objects;
+- (void)removeObjectAtIndex:(NSUInteger)index;
+- (void)removeAllObjects;
+@end

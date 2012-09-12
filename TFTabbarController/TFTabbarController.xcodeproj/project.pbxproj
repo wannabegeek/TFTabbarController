@@ -1,0 +1,360 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E2432CB215FE59A3007F2391 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2432CB115FE59A3007F2391 /* Cocoa.framework */; };
+		E2432CBC15FE59A3007F2391 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2432CBA15FE59A3007F2391 /* InfoPlist.strings */; };
+		E2432CC015FE59A3007F2391 /* TFTabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2432CBF15FE59A3007F2391 /* TFTabbarController.m */; };
+		E2432D0115FE5E65007F2391 /* TFTabbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = E2432CFF15FE5E65007F2391 /* TFTabbarView.h */; };
+		E2432D0215FE5E65007F2391 /* TFTabbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2432D0015FE5E65007F2391 /* TFTabbarView.m */; };
+		E2432D0615FE5E7C007F2391 /* TFTabbarItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = E2432D0415FE5E7C007F2391 /* TFTabbarItemView.h */; };
+		E2432D0715FE5E7C007F2391 /* TFTabbarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2432D0515FE5E7C007F2391 /* TFTabbarItemView.m */; };
+		E2432D3115FF5943007F2391 /* HoverButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E2432D2F15FF5942007F2391 /* HoverButton.h */; };
+		E2432D3215FF5943007F2391 /* HoverButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2432D3015FF5942007F2391 /* HoverButton.m */; };
+		E2432D4615FF6255007F2391 /* TabClose.png in Resources */ = {isa = PBXBuildFile; fileRef = E2432D4015FF6253007F2391 /* TabClose.png */; };
+		E2432D4715FF6255007F2391 /* TabClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2432D4115FF6253007F2391 /* TabClose@2x.png */; };
+		E2432D4815FF6255007F2391 /* TabClosePressed.png in Resources */ = {isa = PBXBuildFile; fileRef = E2432D4215FF6254007F2391 /* TabClosePressed.png */; };
+		E2432D4915FF6255007F2391 /* TabClosePressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2432D4315FF6254007F2391 /* TabClosePressed@2x.png */; };
+		E2432D4A15FF6255007F2391 /* TabCloseRollover.png in Resources */ = {isa = PBXBuildFile; fileRef = E2432D4415FF6255007F2391 /* TabCloseRollover.png */; };
+		E2432D4B15FF6255007F2391 /* TabCloseRollover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2432D4515FF6255007F2391 /* TabCloseRollover@2x.png */; };
+		E2432D4E15FFB0BC007F2391 /* NewTab.png in Resources */ = {isa = PBXBuildFile; fileRef = E2432D4C15FFB0BB007F2391 /* NewTab.png */; };
+		E2432D4F15FFB0BC007F2391 /* NewTabHover.png in Resources */ = {isa = PBXBuildFile; fileRef = E2432D4D15FFB0BC007F2391 /* NewTabHover.png */; };
+		E2432D6916006D2E007F2391 /* TFTabbarController.h in Headers */ = {isa = PBXBuildFile; fileRef = E2432CBE15FE59A3007F2391 /* TFTabbarController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E2432CAE15FE59A3007F2391 /* TFTabbarController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TFTabbarController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2432CB115FE59A3007F2391 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		E2432CB415FE59A3007F2391 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		E2432CB515FE59A3007F2391 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		E2432CB615FE59A3007F2391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E2432CB915FE59A3007F2391 /* TFTabbarController-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TFTabbarController-Info.plist"; sourceTree = "<group>"; };
+		E2432CBB15FE59A3007F2391 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E2432CBD15FE59A3007F2391 /* TFTabbarController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TFTabbarController-Prefix.pch"; sourceTree = "<group>"; };
+		E2432CBE15FE59A3007F2391 /* TFTabbarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFTabbarController.h; sourceTree = "<group>"; };
+		E2432CBF15FE59A3007F2391 /* TFTabbarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFTabbarController.m; sourceTree = "<group>"; };
+		E2432CFF15FE5E65007F2391 /* TFTabbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTabbarView.h; sourceTree = "<group>"; };
+		E2432D0015FE5E65007F2391 /* TFTabbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTabbarView.m; sourceTree = "<group>"; };
+		E2432D0415FE5E7C007F2391 /* TFTabbarItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTabbarItemView.h; sourceTree = "<group>"; };
+		E2432D0515FE5E7C007F2391 /* TFTabbarItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTabbarItemView.m; sourceTree = "<group>"; };
+		E2432D2F15FF5942007F2391 /* HoverButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HoverButton.h; sourceTree = "<group>"; };
+		E2432D3015FF5942007F2391 /* HoverButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HoverButton.m; sourceTree = "<group>"; };
+		E2432D4015FF6253007F2391 /* TabClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabClose.png; sourceTree = "<group>"; };
+		E2432D4115FF6253007F2391 /* TabClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabClose@2x.png"; sourceTree = "<group>"; };
+		E2432D4215FF6254007F2391 /* TabClosePressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabClosePressed.png; sourceTree = "<group>"; };
+		E2432D4315FF6254007F2391 /* TabClosePressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabClosePressed@2x.png"; sourceTree = "<group>"; };
+		E2432D4415FF6255007F2391 /* TabCloseRollover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabCloseRollover.png; sourceTree = "<group>"; };
+		E2432D4515FF6255007F2391 /* TabCloseRollover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabCloseRollover@2x.png"; sourceTree = "<group>"; };
+		E2432D4C15FFB0BB007F2391 /* NewTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NewTab.png; sourceTree = "<group>"; };
+		E2432D4D15FFB0BC007F2391 /* NewTabHover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NewTabHover.png; sourceTree = "<group>"; };
+		E2432D711600811B007F2391 /* TFTabbarController_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFTabbarController_Private.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E2432CAA15FE59A3007F2391 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2432CB215FE59A3007F2391 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E2432CA215FE59A3007F2391 = {
+			isa = PBXGroup;
+			children = (
+				E2432CB715FE59A3007F2391 /* TFTabbarController */,
+				E2432CB015FE59A3007F2391 /* Frameworks */,
+				E2432CAF15FE59A3007F2391 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E2432CAF15FE59A3007F2391 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E2432CAE15FE59A3007F2391 /* TFTabbarController.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E2432CB015FE59A3007F2391 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E2432CB115FE59A3007F2391 /* Cocoa.framework */,
+				E2432CB315FE59A3007F2391 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E2432CB315FE59A3007F2391 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E2432CB415FE59A3007F2391 /* AppKit.framework */,
+				E2432CB515FE59A3007F2391 /* CoreData.framework */,
+				E2432CB615FE59A3007F2391 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		E2432CB715FE59A3007F2391 /* TFTabbarController */ = {
+			isa = PBXGroup;
+			children = (
+				E2432CBE15FE59A3007F2391 /* TFTabbarController.h */,
+				E2432CBF15FE59A3007F2391 /* TFTabbarController.m */,
+				E2432D711600811B007F2391 /* TFTabbarController_Private.h */,
+				E2432CB815FE59A3007F2391 /* Supporting Files */,
+				E2432CFF15FE5E65007F2391 /* TFTabbarView.h */,
+				E2432D0015FE5E65007F2391 /* TFTabbarView.m */,
+				E2432D0415FE5E7C007F2391 /* TFTabbarItemView.h */,
+				E2432D0515FE5E7C007F2391 /* TFTabbarItemView.m */,
+				E2432D2F15FF5942007F2391 /* HoverButton.h */,
+				E2432D3015FF5942007F2391 /* HoverButton.m */,
+			);
+			path = TFTabbarController;
+			sourceTree = "<group>";
+		};
+		E2432CB815FE59A3007F2391 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E2432D3315FF5C13007F2391 /* Images */,
+				E2432CB915FE59A3007F2391 /* TFTabbarController-Info.plist */,
+				E2432CBA15FE59A3007F2391 /* InfoPlist.strings */,
+				E2432CBD15FE59A3007F2391 /* TFTabbarController-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E2432D3315FF5C13007F2391 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				E2432D4C15FFB0BB007F2391 /* NewTab.png */,
+				E2432D4D15FFB0BC007F2391 /* NewTabHover.png */,
+				E2432D4015FF6253007F2391 /* TabClose.png */,
+				E2432D4115FF6253007F2391 /* TabClose@2x.png */,
+				E2432D4215FF6254007F2391 /* TabClosePressed.png */,
+				E2432D4315FF6254007F2391 /* TabClosePressed@2x.png */,
+				E2432D4415FF6255007F2391 /* TabCloseRollover.png */,
+				E2432D4515FF6255007F2391 /* TabCloseRollover@2x.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E2432CAB15FE59A3007F2391 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2432D6916006D2E007F2391 /* TFTabbarController.h in Headers */,
+				E2432D0115FE5E65007F2391 /* TFTabbarView.h in Headers */,
+				E2432D0615FE5E7C007F2391 /* TFTabbarItemView.h in Headers */,
+				E2432D3115FF5943007F2391 /* HoverButton.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E2432CAD15FE59A3007F2391 /* TFTabbarController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E2432CC315FE59A3007F2391 /* Build configuration list for PBXNativeTarget "TFTabbarController" */;
+			buildPhases = (
+				E2432CA915FE59A3007F2391 /* Sources */,
+				E2432CAA15FE59A3007F2391 /* Frameworks */,
+				E2432CAB15FE59A3007F2391 /* Headers */,
+				E2432CAC15FE59A3007F2391 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TFTabbarController;
+			productName = TFTabbarController;
+			productReference = E2432CAE15FE59A3007F2391 /* TFTabbarController.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E2432CA415FE59A3007F2391 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Tom Fewster";
+			};
+			buildConfigurationList = E2432CA715FE59A3007F2391 /* Build configuration list for PBXProject "TFTabbarController" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E2432CA215FE59A3007F2391;
+			productRefGroup = E2432CAF15FE59A3007F2391 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E2432CAD15FE59A3007F2391 /* TFTabbarController */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E2432CAC15FE59A3007F2391 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2432CBC15FE59A3007F2391 /* InfoPlist.strings in Resources */,
+				E2432D4615FF6255007F2391 /* TabClose.png in Resources */,
+				E2432D4715FF6255007F2391 /* TabClose@2x.png in Resources */,
+				E2432D4815FF6255007F2391 /* TabClosePressed.png in Resources */,
+				E2432D4915FF6255007F2391 /* TabClosePressed@2x.png in Resources */,
+				E2432D4A15FF6255007F2391 /* TabCloseRollover.png in Resources */,
+				E2432D4B15FF6255007F2391 /* TabCloseRollover@2x.png in Resources */,
+				E2432D4E15FFB0BC007F2391 /* NewTab.png in Resources */,
+				E2432D4F15FFB0BC007F2391 /* NewTabHover.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E2432CA915FE59A3007F2391 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2432CC015FE59A3007F2391 /* TFTabbarController.m in Sources */,
+				E2432D0215FE5E65007F2391 /* TFTabbarView.m in Sources */,
+				E2432D0715FE5E7C007F2391 /* TFTabbarItemView.m in Sources */,
+				E2432D3215FF5943007F2391 /* HoverButton.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E2432CBA15FE59A3007F2391 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E2432CBB15FE59A3007F2391 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E2432CC115FE59A3007F2391 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		E2432CC215FE59A3007F2391 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E2432CC415FE59A3007F2391 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TFTabbarController/TFTabbarController-Prefix.pch";
+				INFOPLIST_FILE = "TFTabbarController/TFTabbarController-Info.plist";
+				PRODUCT_NAME = TFTabbarController;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		E2432CC515FE59A3007F2391 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TFTabbarController/TFTabbarController-Prefix.pch";
+				INFOPLIST_FILE = "TFTabbarController/TFTabbarController-Info.plist";
+				PRODUCT_NAME = TFTabbarController;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E2432CA715FE59A3007F2391 /* Build configuration list for PBXProject "TFTabbarController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2432CC115FE59A3007F2391 /* Debug */,
+				E2432CC215FE59A3007F2391 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E2432CC315FE59A3007F2391 /* Build configuration list for PBXNativeTarget "TFTabbarController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2432CC415FE59A3007F2391 /* Debug */,
+				E2432CC515FE59A3007F2391 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E2432CA415FE59A3007F2391 /* Project object */;
+}
