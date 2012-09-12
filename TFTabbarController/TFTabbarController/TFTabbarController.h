@@ -32,9 +32,9 @@
 
 - (void)updateTabbarTitles;
 
-- (void)addObject:(id)object;
-- (void)insertObject:(id)object atIndex:(NSUInteger)index;
-- (void)addObjects:(NSArray *)objects;
-- (void)removeObjectAtIndex:(NSUInteger)index;
-- (void)removeAllObjects;
+- (void)addObject:(id)object animated:(BOOL)animated;
+- (void)insertObject:(id)object atIndex:(NSUInteger)index animated:(BOOL)animated;
+- (void)addObjects:(NSArray *)objects animated:(BOOL)animated;
+- (void)removeObjectAtIndex:(NSUInteger)index animated:(BOOL)animated;
+- (void)removeAllObjectsAnimated:(BOOL)animated;
 @end

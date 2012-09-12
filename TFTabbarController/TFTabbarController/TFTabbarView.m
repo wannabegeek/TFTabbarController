@@ -153,18 +153,18 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 	[self sortSubviewsUsingFunction:sortSubViews context:nil];
 }
 
-- (void)createNewTabAtIndex:(NSUInteger)index {
+- (void)createNewTabAtIndex:(NSUInteger)index animated:(BOOL)animated {
 	TFTabbarItemView *itemView = [[TFTabbarItemView alloc] initWithFrame:NSZeroRect];
 	itemView.delegate = self;
 	itemView.title = [_controller requestTabTitleFromDelegateForIndex:index];
 	[self addSubview:itemView];
 	[_itemViews insertObject:itemView atIndex:index];
 
-	[self layoutTabViewsWithAnimation:YES];
+	[self layoutTabViewsWithAnimation:animated];
 	[self setupTabCells];
 }
 
-- (void)removeTabAtIndex:(NSUInteger)index {
+- (void)removeTabAtIndex:(NSUInteger)index animated:(BOOL)animated {
 	TFTabbarItemView *itemView = [_itemViews objectAtIndex:index];
 	[itemView removeFromSuperview];
 	[_itemViews removeObject:itemView];
@@ -175,7 +175,7 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 		[self didChangeValueForKey:@"selectedIndex"];
 	}
 
-	[self layoutTabViewsWithAnimation:YES];
+	[self layoutTabViewsWithAnimation:animated];
 	[self setupTabCells];
 }
 

@@ -110,31 +110,31 @@
 //	}
 //}
 
-- (void)addObject:(id)object {
-	[self insertObject:object atIndex:[_arrangedObjects count]];
+- (void)addObject:(id)object animated:(BOOL)animated {
+	[self insertObject:object atIndex:[_arrangedObjects count] animated:animated];
 }
 
-- (void)insertObject:(id)object atIndex:(NSUInteger)index {
+- (void)insertObject:(id)object atIndex:(NSUInteger)index animated:(BOOL)animated {
 	[_arrangedObjects insertObject:object atIndex:index];
-	[_tabBarView createNewTabAtIndex:index];
+	[_tabBarView createNewTabAtIndex:index animated:animated];
 	NSLog(@"'%@' has been added [%lu]", [_arrangedObjects objectAtIndex:index], index);
 }
 
-- (void)addObjects:(NSArray *)objects {
+- (void)addObjects:(NSArray *)objects animated:(BOOL)animated {
 	for (id object in objects) {
-		[self addObject:object];
+		[self addObject:object animated:animated];
 	}
 }
 
-- (void)removeObjectAtIndex:(NSUInteger)index {
+- (void)removeObjectAtIndex:(NSUInteger)index animated:(BOOL)animated {
 	NSLog(@"'%@' has been removed [%lu]", [_arrangedObjects objectAtIndex:index], index);
 	[_arrangedObjects removeObjectAtIndex:index];
-	[_tabBarView removeTabAtIndex:index];
+	[_tabBarView removeTabAtIndex:index animated:animated];
 }
 
-- (void)removeAllObjects {
+- (void)removeAllObjectsAnimated:(BOOL)animated {
 	for (NSInteger i = [_arrangedObjects count] - 1; i > 0 ; i--) {
-		[self removeObjectAtIndex:i];
+		[self removeObjectAtIndex:i animated:animated];
 	}
 }
 

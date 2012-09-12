@@ -21,7 +21,7 @@
 {
 	// Insert code here to initialize your application
 	NSArray *array = [NSArray arrayWithObjects:@"Tab 1", @"Tab 2", @"Tab 3", @"Tab 4", nil];
-	[_tabbarController addObjects:array];
+	[_tabbarController addObjects:array animated:NO];
 }
 
 - (NSString *)tabbarController:(TFTabbarController *)tabbarController identifierForObject:(id)object {
@@ -46,11 +46,11 @@
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	dateFormatter.dateStyle = NSDateFormatterNoStyle;
 	dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-	[_tabbarController addObject:[NSString stringWithFormat:@"Another New Tab [%@]", [dateFormatter stringFromDate:[NSDate date]]]];
+	[_tabbarController addObject:[NSString stringWithFormat:@"Another New Tab [%@]", [dateFormatter stringFromDate:[NSDate date]]] animated:YES];
 }
 
 - (void)tabbarController:(TFTabbarController *)tabbarController didRemoveObject:(id)object {
-	[_tabbarController removeObjectAtIndex:[tabbarController.objects indexOfObject:object]];
+	[_tabbarController removeObjectAtIndex:[tabbarController.objects indexOfObject:object] animated:YES];
 }
 
 @end
