@@ -185,6 +185,14 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 	}
 }
 
+- (void)updateProperties {
+	[_addTabButton setHidden:!_controller.canAdd];
+	[_addTabButton setEnabled:_controller.enabled];
+	for (TFTabbarItemView *itemView in _itemViews) {
+		[itemView setCanClose:(_controller.enabled && _controller.canRemove)];
+	}
+}
+
 
 - (void)setupTabCells {
 	TFTabbarItemLocation currentTabLocation = TFTabbarItemBeforeSelection;
@@ -227,12 +235,13 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 // Called when the use select a tab
 // Our controller is observing the selectedIndex value for changes, which then swaps in our new viewController
 - (void)selectedTab:(TFTabbarItemView *)itemView {
-	[self willChangeValueForKey:@"selectedIndex"];
-	_selectedIndex = itemView.index;
-	[self setupTabCells];
-	[self setNeedsDisplay:YES];
-//	[_tabView selectTabViewItemAtIndex:_selectedIndex];
-	[self didChangeValueForKey:@"selectedIndex"];
+	if (_controller.enabled) {
+		[self willChangeValueForKey:@"selectedIndex"];
+		_selectedIndex = itemView.index;
+		[self setupTabCells];
+		[self setNeedsDisplay:YES];
+		[self didChangeValueForKey:@"selectedIndex"];
+	}
 }
 
 - (void)removeTab:(TFTabbarItemView *)itemView {

@@ -16,6 +16,7 @@ const CGFloat tabCornerRadius = CORNER_RADIUS;
 @interface TFTabbarItemView ()
 @property (strong) HoverButton *closeButton;
 @property (strong) NSTrackingArea *trackingArea;
+@property (nonatomic, assign) BOOL canClose;
 @end
 
 @implementation TFTabbarItemView
@@ -25,9 +26,11 @@ const CGFloat tabCornerRadius = CORNER_RADIUS;
 @synthesize title = _title;
 @synthesize trackingArea = _trackingArea;
 @synthesize delegate = _delegate;
+@synthesize canClose = _canClose;
 
 - (id)initWithFrame:(NSRect)frameRect {
 	if ((self = [super initWithFrame:frameRect])) {
+		_canClose = YES;
 		NSRect closeBtnFrame = NSInsetRect(self.bounds, 5.0f + CORNER_RADIUS * 2.0f, 5.0f);
 		closeBtnFrame.size.width = closeBtnFrame.size.height;
 		_closeButton = [[HoverButton alloc] initWithFrame:closeBtnFrame];
@@ -54,8 +57,10 @@ const CGFloat tabCornerRadius = CORNER_RADIUS;
 	_closeButton.frame = closeBtnFrame;
 
 	[self removeTrackingArea:_trackingArea];
-	_trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds options:(NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways) owner:self userInfo:nil];
-	[self addTrackingArea:_trackingArea];
+	if (_canClose) {
+		_trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds options:(NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways) owner:self userInfo:nil];
+		[self addTrackingArea:_trackingArea];
+	}
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
@@ -164,5 +169,19 @@ const CGFloat tabCornerRadius = CORNER_RADIUS;
 		[_delegate removeTab:self];
 	}
 }
+
+- (void)setCanClose:(BOOL)value {
+	if (_canClose != value) {
+		_canClose = value;
+		if (_canClose) {
+			_trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds options:(NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways) owner:self userInfo:nil];
+			[self addTrackingArea:_trackingArea];
+		} else {
+			[self removeTrackingArea:_trackingArea];
+			[_closeButton setHidden:YES];
+		}
+	}
+}
+
 
 @end

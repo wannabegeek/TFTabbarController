@@ -26,6 +26,9 @@
 @synthesize arrangedObjects = _arrangedObjects;
 @synthesize selectedIndex = _selectedIndex;
 @synthesize viewControllerCache = _viewControllerCache;
+@synthesize canAdd = _canAdd;
+@synthesize canRemove = _canRemove;
+@synthesize enabled = _enabled;
 
 @synthesize delegate = _delegate;
 
@@ -39,7 +42,11 @@
 
 - (void)setView:(NSView *)view {
 	_view = view;
-	
+
+	_canAdd = YES;
+	_canRemove = YES;
+	_enabled = YES;
+
 	NSRect frame = _view.bounds;
 	frame.origin.y = frame.size.height - 22.0f;
 	frame.size.height = 22.0f;
@@ -147,6 +154,21 @@
 
 - (NSArray *)objects {
 	return [_arrangedObjects copy];
+}
+
+- (void)setCanAdd:(BOOL)canAdd {
+	_canAdd = canAdd;
+	[_tabBarView updateProperties];
+}
+
+- (void)setCanRemove:(BOOL)canRemove {
+	_canRemove = canRemove;
+	[_tabBarView updateProperties];
+}
+
+- (void)enabled:(BOOL)enabled {
+	_enabled = enabled;
+	[_tabBarView updateProperties];
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {

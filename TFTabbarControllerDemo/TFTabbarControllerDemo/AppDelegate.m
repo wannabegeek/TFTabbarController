@@ -47,10 +47,14 @@
 	dateFormatter.dateStyle = NSDateFormatterNoStyle;
 	dateFormatter.timeStyle = NSDateFormatterMediumStyle;
 	[_tabbarController addObject:[NSString stringWithFormat:@"Another New Tab [%@]", [dateFormatter stringFromDate:[NSDate date]]] animated:YES];
+	_tabbarController.canRemove = ([_tabbarController.objects count] > 1);
+	_tabbarController.canAdd = ([_tabbarController.objects count] < 7);
 }
 
 - (void)tabbarController:(TFTabbarController *)tabbarController didRemoveObject:(id)object {
 	[_tabbarController removeObjectAtIndex:[tabbarController.objects indexOfObject:object] animated:YES];
+	_tabbarController.canRemove = ([_tabbarController.objects count] > 1);
+	_tabbarController.canAdd = ([_tabbarController.objects count] < 7);
 }
 
 @end

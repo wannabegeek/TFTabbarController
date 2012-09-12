@@ -22,4 +22,5 @@ extern const CGFloat tabCornerRadius;
 - (void)createNewTabAtIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)removeTabAtIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)refreshTitles;
+- (void)updateProperties;
 @end

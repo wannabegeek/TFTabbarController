@@ -30,6 +30,10 @@
 @property (nonatomic, strong, readonly) NSArray *objects;
 @property (nonatomic, readonly) NSUInteger count;
 
+@property (nonatomic, assign) BOOL canAdd;
+@property (nonatomic, assign) BOOL canRemove;
+@property (nonatomic, assign) BOOL enabled;
+
 - (void)updateTabbarTitles;
 
 - (void)addObject:(id)object animated:(BOOL)animated;

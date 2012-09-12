@@ -30,4 +30,6 @@ typedef enum {
 
 @property (weak) NSObject<TFTabbarItemViewDelegate> *delegate;
 
+- (void)setCanClose:(BOOL)value;
+
 @end
