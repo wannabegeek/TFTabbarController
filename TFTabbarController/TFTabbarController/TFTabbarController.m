@@ -52,7 +52,7 @@
 	frame = _view.bounds;
 	frame.size.height -= 22.0f;
 	_contentView = [[NSView alloc] initWithFrame:frame];
-	_contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
+	_contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 
 	[_view addSubview:_contentView];
 
