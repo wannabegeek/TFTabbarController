@@ -117,7 +117,11 @@
 - (void)insertObject:(id)object atIndex:(NSUInteger)index animated:(BOOL)animated {
 	[_arrangedObjects insertObject:object atIndex:index];
 	[_tabBarView createNewTabAtIndex:index animated:animated];
-	NSLog(@"'%@' has been added [%lu]", [_arrangedObjects objectAtIndex:index], index);
+	if ([_arrangedObjects count] == 1) {
+		_tabBarView.selectedIndex = 0;
+	} else if (index < _tabBarView.selectedIndex) {
+		_tabBarView.selectedIndex = _tabBarView.selectedIndex++;
+	}
 }
 
 - (void)addObjects:(NSArray *)objects animated:(BOOL)animated {
@@ -127,13 +131,12 @@
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index animated:(BOOL)animated {
-	NSLog(@"'%@' has been removed [%lu]", [_arrangedObjects objectAtIndex:index], index);
 	[_arrangedObjects removeObjectAtIndex:index];
 	[_tabBarView removeTabAtIndex:index animated:animated];
 }
 
 - (void)removeAllObjectsAnimated:(BOOL)animated {
-	for (NSInteger i = [_arrangedObjects count] - 1; i > 0 ; i--) {
+	for (NSInteger i = [_arrangedObjects count] - 1; i >= 0 ; i--) {
 		[self removeObjectAtIndex:i animated:animated];
 	}
 }
