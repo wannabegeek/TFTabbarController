@@ -21,4 +21,5 @@ extern const CGFloat tabCornerRadius;
 
 - (void)createNewTabAtIndex:(NSUInteger)index;
 - (void)removeTabAtIndex:(NSUInteger)index;
+- (void)refreshTitles;
 @end

@@ -179,6 +179,12 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 	[self setupTabCells];
 }
 
+- (void)refreshTitles {
+	for (TFTabbarItemView *itemView in _itemViews) {
+		itemView.title = [_controller requestTabTitleFromDelegateForIndex:[_itemViews indexOfObject:itemView]];
+	}
+}
+
 
 - (void)setupTabCells {
 	TFTabbarItemLocation currentTabLocation = TFTabbarItemBeforeSelection;
@@ -207,7 +213,12 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
 	[self willChangeValueForKey:@"selectedIndex"];
 	_selectedIndex = selectedIndex;
-	[self selectedTab:[_itemViews objectAtIndex:selectedIndex]];
+	if ([_itemViews count] != 0) {
+		if (_selectedIndex >= [_itemViews count]) {
+			_selectedIndex = [_itemViews count] - 1;
+		}
+		[self selectedTab:[_itemViews objectAtIndex:selectedIndex]];
+	}
 	[self didChangeValueForKey:@"selectedIndex"];
 }
 

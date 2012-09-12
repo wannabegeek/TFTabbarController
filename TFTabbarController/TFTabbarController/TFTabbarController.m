@@ -64,20 +64,22 @@
 		[self willChangeValueForKey:@"selectedIndex"];
 		_selectedIndex = _tabBarView.selectedIndex;
 		[self didChangeValueForKey:@"selectedIndex"];
-		id object = [_arrangedObjects objectAtIndex:_selectedIndex];
-		NSString *identifier = [_delegate tabbarController:self identifierForObject:object];
-		NSViewController *viewController = [_viewControllerCache objectForKey:identifier];
-		if (!viewController) {
-			viewController = [_delegate tabbarController:self viewControllerForIdentifier:identifier];
-			[_viewControllerCache setObject:viewController forKey:identifier];
-		}
+		if ([_arrangedObjects count]) {
+			id object = [_arrangedObjects objectAtIndex:_selectedIndex];
+			NSString *identifier = [_delegate tabbarController:self identifierForObject:object];
+			NSViewController *viewController = [_viewControllerCache objectForKey:identifier];
+			if (!viewController) {
+				viewController = [_delegate tabbarController:self viewControllerForIdentifier:identifier];
+				[_viewControllerCache setObject:viewController forKey:identifier];
+			}
 
-		viewController.view.frame = _contentView.bounds;
-		[_delegate tabbarController:self prepareViewController:viewController withObject:object];
-		for (NSView *subview in _contentView.subviews) {
-			[subview removeFromSuperview];
+			viewController.view.frame = _contentView.bounds;
+			[_delegate tabbarController:self prepareViewController:viewController withObject:object];
+			for (NSView *subview in _contentView.subviews) {
+				[subview removeFromSuperview];
+			}
+			[_contentView addSubview:viewController.view];
 		}
-		[_contentView addSubview:viewController.view];
 	}
 }
 
@@ -152,6 +154,7 @@
 }
 
 - (void)updateTabbarTitles {
+	[_tabBarView refreshTitles];
 	[_tabBarView setNeedsDisplay:YES];
 }
 
