@@ -80,12 +80,17 @@
 				[_viewControllerCache setObject:viewController forKey:identifier];
 			}
 
-			viewController.view.frame = _contentView.bounds;
 			[_delegate tabbarController:self prepareViewController:viewController withObject:object];
 			for (NSView *subview in _contentView.subviews) {
 				[subview removeFromSuperview];
 			}
+			[viewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
 			[_contentView addSubview:viewController.view];
+
+			NSView *v = viewController.view;
+			NSDictionary *views = NSDictionaryOfVariableBindings(v);
+			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:nil views:views]];
+			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:nil views:views]];
 		}
 	}
 }
