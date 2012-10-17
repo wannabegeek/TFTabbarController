@@ -30,72 +30,76 @@
 @synthesize canRemove = _canRemove;
 @synthesize enabled = _enabled;
 
+@synthesize selectedViewController = _selectedViewController;
+
 @synthesize delegate = _delegate;
 
 - (id)init {
 	if ((self = [super init])) {
 		_viewControllerCache = [NSMutableDictionary dictionary];
 		_arrangedObjects = [NSMutableArray array];
-		_selectedIndex = NSNotFound;
 	}
 	return self;
 }
 
-- (void)awakeFromNib {
-	_viewControllerCache = [NSMutableDictionary dictionary];
-	_arrangedObjects = [NSMutableArray array];
-	_selectedIndex = NSNotFound;
-}
-
 - (void)setView:(NSView *)view {
 	_view = view;
-	_view.translatesAutoresizingMaskIntoConstraints = NO;
-
 
 	_canAdd = YES;
 	_canRemove = YES;
 	_enabled = YES;
 
-	_tabBarView = [[TFTabbarView alloc] initWithFrame:CGRectZero];
+	NSRect frame = _view.bounds;
+	frame.origin.y = frame.size.height - 22.0f;
+	frame.size.height = 22.0f;
+	_tabBarView = [[TFTabbarView alloc] initWithFrame:frame];
+	_tabBarView.autoresizingMask = NSViewWidthSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin;
 	_tabBarView.controller = self;
-	_tabBarView.translatesAutoresizingMaskIntoConstraints = NO;
 	[_view addSubview:_tabBarView];
+	[_tabBarView addObserver:self forKeyPath:@"selectedIndex" options:0 context:nil];
 
-	_contentView = [[NSView alloc] initWithFrame:CGRectZero];
-	_contentView.translatesAutoresizingMaskIntoConstraints = NO;
+	frame = _view.bounds;
+	frame.size.height -= 22.0f;
+	_contentView = [[NSView alloc] initWithFrame:frame];
+	_contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+
 	[_view addSubview:_contentView];
 
-	NSDictionary *views = NSDictionaryOfVariableBindings(_tabBarView, _contentView);
-	[_view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tabBarView]|" options:0 metrics:nil views:views]];
-	[_view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_contentView]|" options:0 metrics:nil views:views]];
-	[_view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tabBarView(22)][_contentView]|" options:0 metrics:nil views:views]];
-
 	_tabBarView.contentView = _contentView;
-	[_tabBarView addObserver:self forKeyPath:@"selectedIndex" options:0 context:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	if (object == _tabBarView && [keyPath isEqualToString:@"selectedIndex"]) {
+		[self willChangeValueForKey:@"selectedIndex"];
+		_selectedIndex = (_tabBarView.selectedIndex == NSNotFound && [_arrangedObjects count])?0:_tabBarView.selectedIndex;
+		[self didChangeValueForKey:@"selectedIndex"];
 		if ([_arrangedObjects count]) {
-			id object = [_arrangedObjects objectAtIndex:_selectedIndex];
-			NSString *identifier = [_delegate tabbarController:self identifierForObject:object];
+			id selectedObject = [_arrangedObjects objectAtIndex:_selectedIndex];
+			NSString *identifier = [_delegate tabbarController:self identifierForObject:selectedObject];
 			NSViewController *viewController = [_viewControllerCache objectForKey:identifier];
 			if (!viewController) {
 				viewController = [_delegate tabbarController:self viewControllerForIdentifier:identifier];
 				[_viewControllerCache setObject:viewController forKey:identifier];
 			}
 
-			[_delegate tabbarController:self prepareViewController:viewController withObject:object];
+			[_delegate tabbarController:self prepareViewController:viewController withObject:selectedObject];
 			for (NSView *subview in _contentView.subviews) {
 				[subview removeFromSuperview];
 			}
 			viewController.view.translatesAutoresizingMaskIntoConstraints = NO;
 			[_contentView addSubview:viewController.view];
+			_selectedViewController = viewController;
 
 			NSView *v = viewController.view;
 			NSDictionary *views = NSDictionaryOfVariableBindings(v);
 			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:nil views:views]];
 			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:nil views:views]];
+
+			if ([_delegate respondsToSelector:@selector(tabbarController:didTransitionToObject:)]) {
+				[_delegate tabbarController:self didTransitionToObject:selectedObject];
+			}
+		} else {
+			_selectedViewController = nil;
 		}
 	}
 }
@@ -182,12 +186,10 @@
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
-	if (_selectedIndex != selectedIndex) {
-		[self willChangeValueForKey:@"selectedIndex"];
-		_selectedIndex = selectedIndex;
-		_tabBarView.selectedIndex = _selectedIndex;
-		[self didChangeValueForKey:@"selectedIndex"];
-	}
+	[self willChangeValueForKey:@"selectedIndex"];
+	_selectedIndex = selectedIndex;
+	_tabBarView.selectedIndex = _selectedIndex;
+	[self didChangeValueForKey:@"selectedIndex"];
 }
 
 - (void)updateTabbarTitles {

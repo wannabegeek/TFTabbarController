@@ -18,6 +18,10 @@
 
 - (void)tabbarControllerDidAddNewObject:(TFTabbarController *)tabbarController;
 - (void)tabbarController:(TFTabbarController *)tabbarController didRemoveObject:(id)object;
+
+@optional
+- (void)tabbarController:(TFTabbarController *)tabbarController didTransitionToObject:(id)object;
+
 @end
 
 
@@ -33,6 +37,8 @@
 @property (nonatomic, assign) BOOL canAdd;
 @property (nonatomic, assign) BOOL canRemove;
 @property (nonatomic, assign) BOOL enabled;
+
+@property(nonatomic, strong, readonly) NSViewController *selectedViewController;
 
 - (void)updateTabbarTitles;
 
