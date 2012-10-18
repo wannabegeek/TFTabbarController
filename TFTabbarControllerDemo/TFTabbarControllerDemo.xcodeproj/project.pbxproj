@@ -16,6 +16,7 @@
 		E2432D5915FFE8E0007F2391 /* TFTabbarController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2432D5815FFE8E0007F2391 /* TFTabbarController.framework */; };
 		E2432D6D16006E8B007F2391 /* TFTabbarControllerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2432D6C16006E8B007F2391 /* TFTabbarControllerDemoViewController.m */; };
 		E2432D7016006F14007F2391 /* TFTabbarControllerDemoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E2432D6F16006F14007F2391 /* TFTabbarControllerDemoView.xib */; };
+		E2C03F2E16301F9E00507763 /* TFTabDemoObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C03F2D16301F9E00507763 /* TFTabDemoObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,8 @@
 		E2432D6B16006E8B007F2391 /* TFTabbarControllerDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTabbarControllerDemoViewController.h; sourceTree = "<group>"; };
 		E2432D6C16006E8B007F2391 /* TFTabbarControllerDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTabbarControllerDemoViewController.m; sourceTree = "<group>"; };
 		E2432D6F16006F14007F2391 /* TFTabbarControllerDemoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TFTabbarControllerDemoView.xib; sourceTree = "<group>"; };
+		E2C03F2C16301F9E00507763 /* TFTabDemoObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTabDemoObject.h; sourceTree = "<group>"; };
+		E2C03F2D16301F9E00507763 /* TFTabDemoObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTabDemoObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,8 @@
 				E2432D6B16006E8B007F2391 /* TFTabbarControllerDemoViewController.h */,
 				E2432D6C16006E8B007F2391 /* TFTabbarControllerDemoViewController.m */,
 				E2432D6F16006F14007F2391 /* TFTabbarControllerDemoView.xib */,
+				E2C03F2C16301F9E00507763 /* TFTabDemoObject.h */,
+				E2C03F2D16301F9E00507763 /* TFTabDemoObject.m */,
 			);
 			path = TFTabbarControllerDemo;
 			sourceTree = "<group>";
@@ -182,6 +187,7 @@
 				E2432CE515FE59FD007F2391 /* main.m in Sources */,
 				E2432CEC15FE59FD007F2391 /* AppDelegate.m in Sources */,
 				E2432D6D16006E8B007F2391 /* TFTabbarControllerDemoViewController.m in Sources */,
+				E2C03F2E16301F9E00507763 /* TFTabDemoObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

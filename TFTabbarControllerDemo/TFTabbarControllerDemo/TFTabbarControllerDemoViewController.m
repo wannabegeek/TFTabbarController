@@ -15,6 +15,7 @@
 @implementation TFTabbarControllerDemoViewController
 
 @synthesize textField;
+@synthesize stringValue = _stringValue;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

@@ -26,7 +26,7 @@
 
 @implementation TFTabbarView
 
-@synthesize selectedIndex = _selectedIndex;
+@synthesize selectionIndexes = _selectionIndexes;
 @synthesize itemViews = _itemViews;
 @synthesize addTabButton = _addTabButton;
 @synthesize contentView = _contentView;
@@ -169,9 +169,9 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 	[itemView removeFromSuperview];
 	[_itemViews removeObject:itemView];
 
-	if (_selectedIndex == [_itemViews count]) {
+	if ([_selectionIndexes lastIndex] == [_itemViews count]) {
 		[self willChangeValueForKey:@"selectedIndex"];
-		_selectedIndex--;
+		[NSIndexSet indexSetWithIndex:[_selectionIndexes lastIndex]-1];
 		[self didChangeValueForKey:@"selectedIndex"];
 	}
 
@@ -181,7 +181,11 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 
 - (void)refreshTitles {
 	for (TFTabbarItemView *itemView in _itemViews) {
+		NSString *previousTitle = itemView.title;
 		itemView.title = [_controller requestTabTitleFromDelegateForIndex:[_itemViews indexOfObject:itemView]];
+		if (![itemView.title isEqualToString:previousTitle]) {
+			[itemView setNeedsDisplay:YES];
+		}
 	}
 }
 
@@ -200,7 +204,7 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 	for (NSUInteger index = 0; index < [_itemViews count]; index++) {
 		TFTabbarItemView *itemView = [_itemViews objectAtIndex:index];
 		itemView.index = index;
-		if (index == _selectedIndex) {
+		if (index == [_selectionIndexes lastIndex]) {
 			currentTabLocation = TFTabbarItemIsSelected;
 		} else if (currentTabLocation == TFTabbarItemIsSelected) {
 			currentTabLocation = TFTabbarItemAfterSelection;
@@ -218,16 +222,16 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 	[_controller requestNewTabFromDelegate];
 }
 
-- (void)setSelectedIndex:(NSUInteger)selectedIndex {
-	[self willChangeValueForKey:@"selectedIndex"];
-	_selectedIndex = selectedIndex;
+- (void)setSelectionIndexes:(NSIndexSet *)selectionIndexes {
+	[self willChangeValueForKey:@"selectionIndexes"];
+	_selectionIndexes = selectionIndexes;
 	if ([_itemViews count] != 0) {
-		if (_selectedIndex >= [_itemViews count]) {
-			_selectedIndex = [_itemViews count] - 1;
+		if ([_selectionIndexes lastIndex] >= [_itemViews count]) {
+			_selectionIndexes = [NSIndexSet indexSetWithIndex:[_itemViews count] - 1];
 		}
-		[self selectedTab:[_itemViews objectAtIndex:selectedIndex]];
+		[self selectedTab:[_itemViews objectAtIndex:[_selectionIndexes lastIndex]]];
 	}
-	[self didChangeValueForKey:@"selectedIndex"];
+	[self didChangeValueForKey:@"selectionIndexes"];
 }
 
 #pragma mark - TFTabbarItemViewDelegate
@@ -236,11 +240,11 @@ NSInteger sortSubViews(TFTabbarItemView *cell1, TFTabbarItemView *cell2, void *c
 // Our controller is observing the selectedIndex value for changes, which then swaps in our new viewController
 - (void)selectedTab:(TFTabbarItemView *)itemView {
 	if (_controller.enabled) {
-		[self willChangeValueForKey:@"selectedIndex"];
-		_selectedIndex = itemView.index;
+		[self willChangeValueForKey:@"selectionIndexes"];
+		_selectionIndexes = [NSIndexSet indexSetWithIndex:itemView.index];
 		[self setupTabCells];
 		[self setNeedsDisplay:YES];
-		[self didChangeValueForKey:@"selectedIndex"];
+		[self didChangeValueForKey:@"selectionIndexes"];
 	}
 }
 

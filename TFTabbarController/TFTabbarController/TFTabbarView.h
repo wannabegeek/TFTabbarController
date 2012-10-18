@@ -17,7 +17,7 @@ extern const CGFloat tabCornerRadius;
 
 @property (nonatomic, weak) IBOutlet NSView *contentView;
 @property (weak) TFTabbarController *controller;
-@property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nonatomic, strong) NSIndexSet *selectionIndexes;
 
 - (void)createNewTabAtIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)removeTabAtIndex:(NSUInteger)index animated:(BOOL)animated;

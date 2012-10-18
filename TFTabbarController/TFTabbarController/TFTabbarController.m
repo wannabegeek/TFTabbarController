@@ -15,6 +15,11 @@
 @property (strong) NSMutableDictionary *viewControllerCache;
 @property (nonatomic, strong) NSMutableArray *arrangedObjects;
 
+@property (strong, nonatomic) NSIndexSet *selectionIndexes;
+
+@property (strong) NSMutableIndexSet *pendingInsertIndexes;
+@property (strong) NSMutableIndexSet *pendingRemoveIndexes;
+
 @end
 
 @implementation TFTabbarController
@@ -34,19 +39,95 @@
 
 @synthesize delegate = _delegate;
 
+@synthesize arrayController = _arrayController;
+@synthesize tabTitleKeyValuePath = _tabTitleKeyValuePath;
+@synthesize selectionIndexes = _selectionIndexes;
+
+@synthesize pendingInsertIndexes = _pendingInsertIndexes;
+@synthesize pendingRemoveIndexes = _pendingRemoveIndexes;
+
 - (id)init {
 	if ((self = [super init])) {
 		_viewControllerCache = [NSMutableDictionary dictionary];
 		_arrangedObjects = [NSMutableArray array];
+		_pendingInsertIndexes = [NSMutableIndexSet indexSet];
+		_pendingRemoveIndexes = [NSMutableIndexSet indexSet];
 	}
 	return self;
 }
 
+- (void)awakeFromNib {
+	if (_arrayController) {
+		[self bind:@"arrangedObjects" toObject:_arrayController withKeyPath:@"arrangedObjects" options:nil];
+
+		[self bind:@"selectionIndexes" toObject:_arrayController withKeyPath:NSSelectionIndexesBinding options:nil];
+		[_arrayController bind:NSSelectionIndexesBinding toObject:self withKeyPath:@"selectionIndexes" options:nil];
+
+		[self bind:@"canAdd" toObject:_arrayController withKeyPath:@"canAdd" options:nil];
+		[self bind:@"canRemove" toObject:_arrayController withKeyPath:@"canRemove" options:nil];
+	} else if ([_arrangedObjects count] > 0) {
+		self.selectionIndexes = [NSIndexSet indexSetWithIndex:0];
+	}
+
+	[self bind:@"selectionIndexes" toObject:_tabBarView withKeyPath:@"selectionIndexes" options:nil];
+	[_tabBarView bind:@"selectionIndexes" toObject:self withKeyPath:@"selectionIndexes" options:nil];
+}
+
+- (void)setSelectionIndexes:(NSIndexSet *)selectionIndexes {
+	[self willChangeValueForKey:@"selectionIndexes"];
+	_selectionIndexes = selectionIndexes;
+	[self didChangeValueForKey:@"selectionIndexes"];
+
+	NSArray *objects = _arrangedObjects;
+	if (_arrayController) {
+		objects = _arrayController.arrangedObjects;
+	}
+
+
+	if ([objects count]) {
+
+		id selectedObject = nil;
+		if ([_selectionIndexes lastIndex] >= [objects count]) {
+			selectedObject = [objects objectAtIndex:[objects count] - 1];
+		} else {
+			selectedObject = [objects objectAtIndex:[_selectionIndexes lastIndex]];
+		}
+
+		NSString *identifier = [_delegate tabbarController:self identifierForObject:selectedObject];
+		NSViewController *viewController = [_viewControllerCache objectForKey:identifier];
+		if (!viewController) {
+			viewController = [_delegate tabbarController:self viewControllerForIdentifier:identifier];
+			[_viewControllerCache setObject:viewController forKey:identifier];
+		}
+
+		[_delegate tabbarController:self prepareViewController:viewController withObject:selectedObject];
+		for (NSView *subview in _contentView.subviews) {
+			[subview removeFromSuperview];
+		}
+		viewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+		[_contentView addSubview:viewController.view];
+		_selectedViewController = viewController;
+
+		NSView *v = viewController.view;
+		NSDictionary *views = NSDictionaryOfVariableBindings(v);
+		[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:nil views:views]];
+		[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:nil views:views]];
+
+		if ([_delegate respondsToSelector:@selector(tabbarController:didTransitionToObject:)]) {
+			[_delegate tabbarController:self didTransitionToObject:selectedObject];
+		}
+	} else {
+		_selectedViewController = nil;
+	}
+}
+
 - (void)setView:(NSView *)view {
 	_view = view;
-
-	_canAdd = YES;
-	_canRemove = YES;
+	if (!_arrayController) {
+		_canAdd = YES;
+		_canRemove = YES;
+	}
+	
 	_enabled = YES;
 
 	NSRect frame = _view.bounds;
@@ -56,7 +137,7 @@
 	_tabBarView.autoresizingMask = NSViewWidthSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin;
 	_tabBarView.controller = self;
 	[_view addSubview:_tabBarView];
-	[_tabBarView addObserver:self forKeyPath:@"selectedIndex" options:0 context:nil];
+//	[_tabBarView addObserver:self forKeyPath:@"selectedIndex" options:0 context:nil];
 
 	frame = _view.bounds;
 	frame.size.height -= 22.0f;
@@ -68,81 +149,24 @@
 	_tabBarView.contentView = _contentView;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	if (object == _tabBarView && [keyPath isEqualToString:@"selectedIndex"]) {
-		[self willChangeValueForKey:@"selectedIndex"];
-		_selectedIndex = (_tabBarView.selectedIndex == NSNotFound && [_arrangedObjects count])?0:_tabBarView.selectedIndex;
-		[self didChangeValueForKey:@"selectedIndex"];
-		if ([_arrangedObjects count]) {
-			id selectedObject = [_arrangedObjects objectAtIndex:_selectedIndex];
-			NSString *identifier = [_delegate tabbarController:self identifierForObject:selectedObject];
-			NSViewController *viewController = [_viewControllerCache objectForKey:identifier];
-			if (!viewController) {
-				viewController = [_delegate tabbarController:self viewControllerForIdentifier:identifier];
-				[_viewControllerCache setObject:viewController forKey:identifier];
-			}
-
-			[_delegate tabbarController:self prepareViewController:viewController withObject:selectedObject];
-			for (NSView *subview in _contentView.subviews) {
-				[subview removeFromSuperview];
-			}
-			viewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-			[_contentView addSubview:viewController.view];
-			_selectedViewController = viewController;
-
-			NSView *v = viewController.view;
-			NSDictionary *views = NSDictionaryOfVariableBindings(v);
-			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:nil views:views]];
-			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:nil views:views]];
-
-			if ([_delegate respondsToSelector:@selector(tabbarController:didTransitionToObject:)]) {
-				[_delegate tabbarController:self didTransitionToObject:selectedObject];
-			}
-		} else {
-			_selectedViewController = nil;
-		}
-	}
-}
-
-//- (void)setArrangedObjects:(NSArray *)arrangedObjects {
-//	NSArray *originalObjects = [_arrangedObjects copy];
-//	_arrangedObjects = arrangedObjects;
-//
-//	// work out which tabs to remove first...
-//	for (NSInteger index = [originalObjects count]-1; index >= 0; index--) {
-//		id originalObject = [originalObjects objectAtIndex:index];
-//		NSUInteger newIndex = [_arrangedObjects indexOfObject:originalObject];
-//		if (newIndex == NSNotFound) {
-//			// Our object has been removed
-//			NSLog(@"'%@' has been removed [%ld]", originalObject, index);
-//			[_tabBarView removeTabAtIndex:index];
-//		}
-//	}
-//
-//	// work out which tabs to add...
-//	for (NSUInteger index = 0; index < [_arrangedObjects count]; index++) {
-//		id newObject = [_arrangedObjects objectAtIndex:index];
-//		NSUInteger originalIndex = [originalObjects indexOfObject:newObject];
-//		if (originalIndex == NSNotFound) {
-//			// Our object has been removed
-//			NSLog(@"'%@' has been added [%lu]", newObject, index);
-//			[_tabBarView createNewTabAtIndex:index];
-//		}
-//	}
-//}
-
 - (void)addObject:(id)object animated:(BOOL)animated {
 	[self insertObject:object atIndex:[_arrangedObjects count] animated:animated];
 }
 
 - (void)insertObject:(id)object atIndex:(NSUInteger)index animated:(BOOL)animated {
+	NSAssert(_arrayController == nil, @"You can't use this method is you are using an NSArrayController for content");
 	[_arrangedObjects insertObject:object atIndex:index];
 	[_tabBarView createNewTabAtIndex:index animated:animated];
-	if ([_arrangedObjects count] == 1) {
-		_tabBarView.selectedIndex = 0;
-	} else if (index < _tabBarView.selectedIndex) {
-		_tabBarView.selectedIndex = _tabBarView.selectedIndex++;
+
+	if ([_selectionIndexes count] == 0) {
+		self.selectionIndexes = [NSIndexSet indexSetWithIndex:0];
 	}
+
+//	if ([_arrangedObjects count] == 1) {
+//		_tabBarView.selectedIndex = 0;
+//	} else if (index < _tabBarView.selectedIndex) {
+//		_tabBarView.selectedIndex = _tabBarView.selectedIndex++;
+//	}
 }
 
 - (void)addObjects:(NSArray *)objects animated:(BOOL)animated {
@@ -152,6 +176,7 @@
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index animated:(BOOL)animated {
+	NSAssert(_arrayController == nil, @"You can't use this method is you are using an NSArrayController for content");
 	[_arrangedObjects removeObjectAtIndex:index];
 	[_tabBarView removeTabAtIndex:index animated:animated];
 }
@@ -185,10 +210,60 @@
 	[_tabBarView updateProperties];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if ([keyPath isEqualToString:_tabTitleKeyValuePath]) {
+		[_tabBarView refreshTitles];
+	}
+}
+
+- (void)setArrangedObjects:(NSMutableArray *)arrangedObjects {
+
+	NSArray *originalObjects = [_arrangedObjects copy];
+	_arrangedObjects = [arrangedObjects mutableCopy];
+
+	if (_tabTitleKeyValuePath) {
+		for (id obj in originalObjects) {
+			[obj removeObserver:self forKeyPath:_tabTitleKeyValuePath];
+		}
+		for (id obj in _arrangedObjects) {
+			[obj addObserver:self forKeyPath:_tabTitleKeyValuePath options:0 context:nil];
+		}
+	}
+
+	NSLog(@"Current: %ld New: %ld", [originalObjects count], [_arrangedObjects count]);
+	NSInteger diff = [originalObjects count] - [_arrangedObjects count];
+	NSLog(@"DIFF : %ld", diff);
+
+	if (diff > 0) {
+		__block NSInteger count = diff;
+		[_pendingRemoveIndexes enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger idx, BOOL *stop) {
+			[_tabBarView removeTabAtIndex:idx animated:YES];
+			count--;
+		}];
+		while (count > 0) {
+			[_tabBarView removeTabAtIndex:0 animated:NO];
+			count--;
+		}
+	} else if (diff < 0) {
+		__block NSInteger count = diff;
+		[_pendingInsertIndexes enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger idx, BOOL *stop) {
+			[_tabBarView createNewTabAtIndex:idx animated:YES];
+			count++;
+		}];
+		while (count < 0) {
+			[_tabBarView createNewTabAtIndex:[originalObjects count] + (count - diff) animated:NO];
+			count++;
+		}
+	}
+
+	[_pendingInsertIndexes removeAllIndexes];
+	[_pendingRemoveIndexes removeAllIndexes];
+}
+
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
 	[self willChangeValueForKey:@"selectedIndex"];
 	_selectedIndex = selectedIndex;
-	_tabBarView.selectedIndex = _selectedIndex;
+//	_tabBarView.selectedIndex = _selectedIndex;
 	[self didChangeValueForKey:@"selectedIndex"];
 }
 
@@ -198,25 +273,40 @@
 }
 
 - (void)requestNewTabFromDelegate {
-	if (_delegate && [_delegate respondsToSelector:@selector(tabbarControllerDidAddNewObject:)]) {
-		[_delegate tabbarControllerDidAddNewObject:self];
+	if (_arrayController) {
+		id object = [_arrayController newObject];
+		[_arrayController addObject:object];
+		[_pendingInsertIndexes addIndex:[_arrayController.arrangedObjects count]];
+	} else {
+		if (_delegate && [_delegate respondsToSelector:@selector(tabbarControllerDidAddNewObject:)]) {
+			[_delegate tabbarControllerDidAddNewObject:self];
+		}
 	}
 }
 
 - (NSString *)requestTabTitleFromDelegateForIndex:(NSUInteger)index {
-	if (_delegate && [_delegate respondsToSelector:@selector(tabbarController:titleForObject:)]) {
-		return [_delegate tabbarController:self titleForObject:[_arrangedObjects objectAtIndex:index]];
+	if (_arrayController && _tabTitleKeyValuePath) {
+		return [[_arrayController.arrangedObjects objectAtIndex:index] valueForKeyPath:_tabTitleKeyValuePath];
+	} else {
+		if (_delegate && [_delegate respondsToSelector:@selector(tabbarController:titleForObject:)]) {
+			return [_delegate tabbarController:self titleForObject:[_arrangedObjects objectAtIndex:index]];
+		}
 	}
 	return nil;
 }
 
 - (void)requestRemovalOfTabAtIndex:(NSUInteger)index {
-//	NSMutableArray *temp = [_arrangedObjects mutableCopy];
-	id object = [_arrangedObjects objectAtIndex:index];
-//	[temp removeObjectAtIndex:index];
-//	_arrangedObjects = temp;
-	if (_delegate && [_delegate respondsToSelector:@selector(tabbarController:didRemoveObject:)]) {
-		[_delegate tabbarController:self didRemoveObject:object];
+	if (_arrayController) {
+		id object = [_arrayController.arrangedObjects objectAtIndex:index];
+		[_pendingRemoveIndexes addIndexes:[_arrayController.arrangedObjects indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+			return [object isEqual:obj];
+		}]];
+		[_arrayController removeObject:object];
+	} else {
+		id object = [_arrangedObjects objectAtIndex:index];
+		if (_delegate && [_delegate respondsToSelector:@selector(tabbarController:didRemoveObject:)]) {
+			[_delegate tabbarController:self didRemoveObject:object];
+		}
 	}
 }
 

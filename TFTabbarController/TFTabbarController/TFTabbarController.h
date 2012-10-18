@@ -11,21 +11,25 @@
 @class TFTabbarController;
 
 @protocol TFTabbarDelegate <NSObject>
-- (NSString *)tabbarController:(TFTabbarController *)tabbarController titleForObject:(id)object;
 - (NSString *)tabbarController:(TFTabbarController *)tabbarController identifierForObject:(id)object;
 - (NSViewController *)tabbarController:(TFTabbarController *)tabbarController viewControllerForIdentifier:(NSString *)identifier;
 - (void)tabbarController:(TFTabbarController *)tabbarController prepareViewController:(NSViewController *)viewController withObject:(id)object;
 
-- (void)tabbarControllerDidAddNewObject:(TFTabbarController *)tabbarController;
-- (void)tabbarController:(TFTabbarController *)tabbarController didRemoveObject:(id)object;
-
 @optional
 - (void)tabbarController:(TFTabbarController *)tabbarController didTransitionToObject:(id)object;
+
+// These are only optional if you are using a NSArrayController for the data source
+- (NSString *)tabbarController:(TFTabbarController *)tabbarController titleForObject:(id)object;
+- (void)tabbarControllerDidAddNewObject:(TFTabbarController *)tabbarController;
+- (void)tabbarController:(TFTabbarController *)tabbarController didRemoveObject:(id)object;
 
 @end
 
 
 @interface TFTabbarController : NSObject
+
+@property (strong) IBOutlet NSArrayController *arrayController;
+@property (strong) NSString *tabTitleKeyValuePath;
 
 @property (nonatomic, weak) IBOutlet NSView *view;
 @property (nonatomic, assign) NSUInteger selectedIndex;

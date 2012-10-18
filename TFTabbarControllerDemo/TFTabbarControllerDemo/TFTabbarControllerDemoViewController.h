@@ -11,5 +11,6 @@
 @interface TFTabbarControllerDemoViewController : NSViewController
 
 @property (weak) IBOutlet NSTextField *textField;
+@property (strong) NSString *stringValue;
 
 @end

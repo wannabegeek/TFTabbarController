@@ -8,20 +8,28 @@
 
 #import "AppDelegate.h"
 #import "TFTabbarControllerDemoViewController.h"
+#import "TFTabDemoObject.h"
 
 @interface AppDelegate ()
-@property (weak) IBOutlet TFTabbarController *tabbarController;
+@property (weak) IBOutlet TFTabbarController *tabbarControllerWithBindings;
+@property (weak) IBOutlet TFTabbarController *tabbarControllerWithoutBindings;
+@property (strong) IBOutlet TFTabbarControllerDemoViewController *viewController;
 @end
+
+//#define USE_BINDINGS 1
 
 @implementation AppDelegate
 
-@synthesize tabbarController = _tabbarController;
+@synthesize tabbarControllerWithBindings = _tabbarControllerWithBindings;
+@synthesize tabbarControllerWithoutBindings = _tabbarControllerWithoutBindings;
+@synthesize content = _content;
+@synthesize viewController = _viewController;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	// Insert code here to initialize your application
-	NSArray *array = [NSArray arrayWithObjects:@"Tab 1", @"Tab 2", @"Tab 3", @"Tab 4", nil];
-	[_tabbarController addObjects:array animated:NO];
+	self.content = [NSArray arrayWithObjects:[TFTabDemoObject tabDemoObjectWithName:@"Tab 1"], [TFTabDemoObject tabDemoObjectWithName:@"Tab 2"], [TFTabDemoObject tabDemoObjectWithName:@"Tab 3"], nil];
+	[_tabbarControllerWithoutBindings addObjects:self.content animated:NO];
 }
 
 - (NSString *)tabbarController:(TFTabbarController *)tabbarController identifierForObject:(id)object {
@@ -29,32 +37,45 @@
 }
 
 - (NSViewController *)tabbarController:(TFTabbarController *)tabbarController viewControllerForIdentifier:(NSString *)identifier {
-	return [[TFTabbarControllerDemoViewController alloc] initWithNibName:@"TFTabbarControllerDemoView" bundle:nil];
+	if (tabbarController == _tabbarControllerWithoutBindings) {
+		return [[TFTabbarControllerDemoViewController alloc] initWithNibName:@"TFTabbarControllerDemoView" bundle:nil];
+	} else {
+		return self.viewController;
+	}
 }
 
 - (NSString *)tabbarController:(TFTabbarController *)tabbarController titleForObject:(id)object {
-	return object;
+	return [object valueForKeyPath:@"name"];
 }
 
-
 - (void)tabbarController:(TFTabbarController *)tabbarController prepareViewController:(NSViewController *)viewController withObject:(id)object {
-	TFTabbarControllerDemoViewController *vc = (TFTabbarControllerDemoViewController *)viewController;
-	vc.textField.stringValue = object;
+}
+
+- (void)tabbarController:(TFTabbarController *)tabbarController didTransitionToObject:(id)object {
+	if (tabbarController == _tabbarControllerWithoutBindings) {
+		TFTabbarControllerDemoViewController *vc = (TFTabbarControllerDemoViewController *)tabbarController.selectedViewController;
+		vc.textField.stringValue = [object valueForKeyPath:@"name"];
+	}
 }
 
 - (void)tabbarControllerDidAddNewObject:(TFTabbarController *)tabbarController {
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	dateFormatter.dateStyle = NSDateFormatterNoStyle;
-	dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-	[_tabbarController addObject:[NSString stringWithFormat:@"Another New Tab [%@]", [dateFormatter stringFromDate:[NSDate date]]] animated:YES];
-	_tabbarController.canRemove = ([_tabbarController.objects count] > 1);
-	_tabbarController.canAdd = ([_tabbarController.objects count] < 7);
+	if (tabbarController == _tabbarControllerWithoutBindings) {
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		dateFormatter.dateStyle = NSDateFormatterNoStyle;
+		dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+
+		[_tabbarControllerWithoutBindings addObject:[TFTabDemoObject tabDemoObjectWithName:[NSString stringWithFormat:@"Another New Tab [%@]", [dateFormatter stringFromDate:[NSDate date]]]] animated:YES];
+		_tabbarControllerWithoutBindings.canRemove = ([_tabbarControllerWithoutBindings.objects count] > 1);
+		_tabbarControllerWithoutBindings.canAdd = ([_tabbarControllerWithoutBindings.objects count] < 7);
+	}
 }
 
 - (void)tabbarController:(TFTabbarController *)tabbarController didRemoveObject:(id)object {
-	[_tabbarController removeObjectAtIndex:[tabbarController.objects indexOfObject:object] animated:YES];
-	_tabbarController.canRemove = ([_tabbarController.objects count] > 1);
-	_tabbarController.canAdd = ([_tabbarController.objects count] < 7);
+	if (tabbarController == _tabbarControllerWithoutBindings) {
+		[_tabbarControllerWithoutBindings removeObjectAtIndex:[tabbarController.objects indexOfObject:object] animated:YES];
+		_tabbarControllerWithoutBindings.canRemove = ([_tabbarControllerWithoutBindings.objects count] > 1);
+		_tabbarControllerWithoutBindings.canAdd = ([_tabbarControllerWithoutBindings.objects count] < 7);
+	}
 }
 
 @end

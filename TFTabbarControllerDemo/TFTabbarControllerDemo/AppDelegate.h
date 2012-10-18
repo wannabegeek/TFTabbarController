@@ -12,5 +12,6 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate, TFTabbarDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
+@property (strong) NSArray *content;
 
 @end
