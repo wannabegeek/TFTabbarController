@@ -233,9 +233,7 @@
 		}
 	}
 
-	NSLog(@"Current: %ld New: %ld", [originalObjects count], [_arrangedObjects count]);
 	NSInteger diff = [originalObjects count] - [_arrangedObjects count];
-	NSLog(@"DIFF : %ld", diff);
 
 	if (diff > 0) {
 		__block NSInteger count = diff;
