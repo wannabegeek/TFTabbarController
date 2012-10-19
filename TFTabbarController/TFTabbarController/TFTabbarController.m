@@ -101,17 +101,19 @@
 		}
 
 		[_delegate tabbarController:self prepareViewController:viewController withObject:selectedObject];
-		for (NSView *subview in _contentView.subviews) {
-			[subview removeFromSuperview];
-		}
-		viewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-		[_contentView addSubview:viewController.view];
-		_selectedViewController = viewController;
+		if (_selectedViewController != viewController) {
+			for (NSView *subview in _contentView.subviews) {
+				[subview removeFromSuperview];
+			}
+			viewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+			[_contentView addSubview:viewController.view];
+			_selectedViewController = viewController;
 
-		NSView *v = viewController.view;
-		NSDictionary *views = NSDictionaryOfVariableBindings(v);
-		[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:nil views:views]];
-		[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:nil views:views]];
+			NSView *v = viewController.view;
+			NSDictionary *views = NSDictionaryOfVariableBindings(v);
+			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:nil views:views]];
+			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:nil views:views]];
+		}
 
 		if ([_delegate respondsToSelector:@selector(tabbarController:didTransitionToObject:)]) {
 			[_delegate tabbarController:self didTransitionToObject:selectedObject];
