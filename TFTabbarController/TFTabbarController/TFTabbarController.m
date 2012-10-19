@@ -130,21 +130,22 @@
 	
 	_enabled = YES;
 
-	NSRect frame = _view.bounds;
-	frame.origin.y = frame.size.height - 22.0f;
-	frame.size.height = 22.0f;
-	_tabBarView = [[TFTabbarView alloc] initWithFrame:frame];
-	_tabBarView.autoresizingMask = NSViewWidthSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin;
+	_tabBarView = [[TFTabbarView alloc] initWithFrame:NSZeroRect];
+//	_tabBarView.autoresizingMask = NSViewWidthSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin;
 	_tabBarView.controller = self;
+	_tabBarView.translatesAutoresizingMaskIntoConstraints = NO;
 	[_view addSubview:_tabBarView];
-//	[_tabBarView addObserver:self forKeyPath:@"selectedIndex" options:0 context:nil];
 
-	frame = _view.bounds;
-	frame.size.height -= 22.0f;
-	_contentView = [[NSView alloc] initWithFrame:frame];
-	_contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	_contentView = [[NSView alloc] initWithFrame:NSZeroRect];
+//	_contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	_contentView.translatesAutoresizingMaskIntoConstraints = NO;
 
 	[_view addSubview:_contentView];
+
+	NSDictionary *views = NSDictionaryOfVariableBindings(_tabBarView, _contentView);
+	[_view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tabBarView]|" options:0 metrics:nil views:views]];
+	[_view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_contentView]|" options:0 metrics:nil views:views]];
+	[_view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tabBarView(==22)][_contentView]|" options:0 metrics:nil views:views]];
 
 	_tabBarView.contentView = _contentView;
 }
