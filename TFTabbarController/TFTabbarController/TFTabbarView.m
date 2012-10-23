@@ -39,11 +39,8 @@
 
 		_itemViews = [NSMutableArray array];
 
-		NSRect addTabBtnFrame = NSInsetRect(self.bounds, 5.0f, 2.5f);
-		addTabBtnFrame.origin.x = addTabBtnFrame.size.width - 20.0f;
-		addTabBtnFrame.size.width = 20.0f;
-
-		_addTabButton = [[HoverButton alloc] initWithFrame:addTabBtnFrame];
+		_addTabButton = [[HoverButton alloc] initWithFrame:NSZeroRect];
+		_addTabButton.translatesAutoresizingMaskIntoConstraints = NO;
 		NSBundle *frameworkBundle = [NSBundle bundleWithIdentifier:@"com.wannabegeek.TFTabbarController"];
 		_addTabButton.normalImage = [frameworkBundle imageForResource:@"NewTab"];
 		_addTabButton.hoverImage = [frameworkBundle imageForResource:@"NewTabHover"];
@@ -51,6 +48,11 @@
 		_addTabButton.target = self;
 		_addTabButton.action = @selector(addTab:);
 		[self addSubview:_addTabButton];
+
+		NSDictionary *views = NSDictionaryOfVariableBindings(_addTabButton);
+		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_addTabButton(==20)]-5.0-|" options:0 metrics:nil views:views]];
+		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_addTabButton(==20)]" options:0 metrics:nil views:views]];
+		[self addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_addTabButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
 
 		[[NSNotificationCenter defaultCenter] addObserverForName:NSWindowDidBecomeKeyNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 			[self setNeedsDisplay:YES];

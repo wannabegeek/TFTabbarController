@@ -31,16 +31,20 @@ const CGFloat tabCornerRadius = CORNER_RADIUS;
 - (id)initWithFrame:(NSRect)frameRect {
 	if ((self = [super initWithFrame:frameRect])) {
 		_canClose = YES;
-		NSRect closeBtnFrame = NSInsetRect(self.bounds, 5.0f + CORNER_RADIUS * 2.0f, 5.0f);
-		closeBtnFrame.size.width = closeBtnFrame.size.height;
-		_closeButton = [[HoverButton alloc] initWithFrame:closeBtnFrame];
-
+		_closeButton = [[HoverButton alloc] initWithFrame:NSZeroRect];
+		_closeButton.translatesAutoresizingMaskIntoConstraints = NO;
 		NSBundle *frameworkBundle = [NSBundle bundleWithIdentifier:@"com.wannabegeek.TFTabbarController"];
 		_closeButton.normalImage = [frameworkBundle imageForResource:@"TabClose"];
 		_closeButton.hoverImage = [frameworkBundle imageForResource:@"TabClosePressed"];
 		_closeButton.target = self;
 		_closeButton.action = @selector(removeTab:);
 		[self addSubview:_closeButton];
+
+		NSDictionary *views = NSDictionaryOfVariableBindings(_closeButton);
+		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15.0-[_closeButton(==12)]" options:0 metrics:nil views:views]];
+		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_closeButton(==12)]" options:0 metrics:nil views:views]];
+		[self addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_closeButton attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
+
 
 		_trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds options:(NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways) owner:self userInfo:nil];
         [self addTrackingArea:_trackingArea];
@@ -52,10 +56,6 @@ const CGFloat tabCornerRadius = CORNER_RADIUS;
 
 - (void)setFrame:(NSRect)frameRect {
 	[super setFrame:frameRect];
-	NSRect closeBtnFrame = NSInsetRect(self.bounds, 5.0f + CORNER_RADIUS * 2.0f, 5.0f);
-	closeBtnFrame.size.width = closeBtnFrame.size.height;
-	_closeButton.frame = closeBtnFrame;
-
 	[self removeTrackingArea:_trackingArea];
 	if (_canClose) {
 		_trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds options:(NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways) owner:self userInfo:nil];
