@@ -115,6 +115,7 @@
 			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:nil views:views]];
 		}
 
+		[self updateTabbarTitles];
 		if ([_delegate respondsToSelector:@selector(tabbarController:didTransitionToObject:)]) {
 			[_delegate tabbarController:self didTransitionToObject:selectedObject];
 		}
