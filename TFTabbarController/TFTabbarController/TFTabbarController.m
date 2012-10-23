@@ -115,7 +115,6 @@
 			[_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:nil views:views]];
 		}
 
-		[self updateTabbarTitles];
 		if ([_delegate respondsToSelector:@selector(tabbarController:didTransitionToObject:)]) {
 			[_delegate tabbarController:self didTransitionToObject:selectedObject];
 		}
@@ -260,6 +259,7 @@
 
 	[_pendingInsertIndexes removeAllIndexes];
 	[_pendingRemoveIndexes removeAllIndexes];
+	[self updateTabbarTitles];
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
@@ -288,7 +288,12 @@
 
 - (NSString *)requestTabTitleFromDelegateForIndex:(NSUInteger)index {
 	if (_arrayController && _tabTitleKeyValuePath) {
-		return [[_arrayController.arrangedObjects objectAtIndex:index] valueForKeyPath:_tabTitleKeyValuePath];
+		NSArray *objects = _arrayController.arrangedObjects;
+		if (index >= [objects count]) {
+			return nil;
+		} else {
+			return [[_arrayController.arrangedObjects objectAtIndex:index] valueForKeyPath:_tabTitleKeyValuePath];
+		}
 	} else {
 		if (_delegate && [_delegate respondsToSelector:@selector(tabbarController:titleForObject:)]) {
 			return [_delegate tabbarController:self titleForObject:[_arrangedObjects objectAtIndex:index]];
